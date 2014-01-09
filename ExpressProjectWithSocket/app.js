@@ -18,13 +18,13 @@ app.configure(function(){
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.get('/', routes.index);
+app.get('/home', routes.index);
 
 server.listen(app.get('port'), function(){
     console.log("Express server listening on port " + app.get('port'));
 });
 
-var io = require("socket.io").listen(server)
+var io = require("socket.io").listen(server);
 
 io.sockets.on('connection', function (socket) {
     socket.emit('news', { hello: 'world' });

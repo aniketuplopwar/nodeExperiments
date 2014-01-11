@@ -4,8 +4,7 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
+var Dispatcher = require('./Server/Dispatcher');
 var http = require('http');
 var path = require('path');
 var RedisStore = require('redis');
@@ -13,7 +12,7 @@ var RedisStore = require('redis');
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3001);
+app.set('port', process.env.PORT || 8181);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -31,8 +30,16 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+/*
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/users', routes.list);
+app.get('/login', routes.login);
+*/
+
+app.get('/*', function(req, res){
+    Dispatcher.handleRequest(req,res);
+});
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
@@ -50,14 +57,14 @@ client.on("error", function (err) {
     console.log("Error " + err);
 });
 
-client.on("connect", runSample);
+//client.on("connect", runSample);
 
 function runSample() {
 
     client.set("string key", "Hello World", function (err, reply) {
         console.log(reply.toString());
     });
-    client.get("string key", function (err, reply) {
+    client.get("foo", function (err, reply) {
         console.log(reply.toString());
     });
 }

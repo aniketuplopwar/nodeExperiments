@@ -1,0 +1,11 @@
+extends layout
+block content
+  form(action='/login', method='POST')
+      div
+        label User:
+        input(name='user', value='')
+      div
+        label Password:
+        input(type='text' )
+      div
+        input(type='submit', value='Save')

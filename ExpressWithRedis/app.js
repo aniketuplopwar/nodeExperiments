@@ -59,7 +59,7 @@ client.on("error", function (err) {
 
 //client.on("connect", runSample);
 
-function runSample() {
+function runSample(obj) {
 
     client.set("string key", "Hello World", function (err, reply) {
         console.log(reply.toString());
@@ -67,8 +67,25 @@ function runSample() {
     client.get("foo", function (err, reply) {
         console.log(reply.toString());
     });
+
+
 }
 
+
+function setAsObject(obj){
+
+    var  finalObj = obj;
+
+    if(typeof obj == "string"){
+        finalObj = JSON.parse(obj);
+    }
+    var keys =  Object.keys(finalObj);
+    for(key in keys){
+        if(typeof finalObj[key] == "string")
+            client.hmset(key,)
+
+    }
+}
 /**
  * Redis code ends here
  */
